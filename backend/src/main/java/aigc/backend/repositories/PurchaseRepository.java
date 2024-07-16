@@ -49,7 +49,7 @@ public class PurchaseRepository {
         String items_ids = charge.getMetadata().get("item_ids");
 
         String emailContent = "Hello\n\n Thank you for your payment!\n\n Total amount \n " + "$ "+ amount/100 + "\n\nYou may view you receipt at " + receiptUrl;
-        mailSenderService.sendNewMail(email, "Payment receipt from AIGC Hub Order No. " + purchase_id, emailContent);
+        mailSenderService.sendNewMail(email, "Payment receipt from AI Marketplace Order No. " + purchase_id, emailContent);
 
         try {
             jdbcTemplate.update(SQL_SAVE_CHARGE_AS_PO, purchase_id, user_id, items_purchased, items_ids, amount, email, receiptUrl);

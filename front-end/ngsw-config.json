@@ -31,7 +31,10 @@
     {
       "name": "api-call",
       "urls": [
-        "/api/product/**"
+        "/api/product/**",
+        "/api/cart/**",
+        "/api/profile/**",
+        "/api/purchase/**"
       ],
       "cacheConfig": {
         "maxAge": "12h",
