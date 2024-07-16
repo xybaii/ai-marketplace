@@ -27,16 +27,3 @@ This is an e-commerce web application for third-party AI services. Users can sig
 - **Deployment**: Docker, Railway
 
 
-### Previews
-
-![alt text](image.png)
-
-![alt text](image-1.png)
-
-![alt text](image-5.png)
-
-![alt text](image-2.png)
-
-![alt text](image-3.png)
-
-![alt text](image-4.png)
