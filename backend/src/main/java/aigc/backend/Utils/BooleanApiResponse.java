@@ -1,5 +1,8 @@
 package aigc.backend.Utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class BooleanApiResponse {
     private Boolean success;
     private String message;
@@ -28,6 +31,11 @@ public class BooleanApiResponse {
         this.message = message;
     }
 
-    
+ 
+    public String toJsonString() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(this);
+        return json;
+    }
     
 }

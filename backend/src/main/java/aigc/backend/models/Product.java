@@ -17,7 +17,6 @@ public class Product {
     public Product() {
     }
 
-
     public Product(Integer id, String productname, String description, String tags, String url, Double price,
             Integer rating, String image) {
         this.id = id;
@@ -109,8 +108,6 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
-
-
     
     public Product rsToModel(SqlRowSet rs) {
 
@@ -126,14 +123,5 @@ public class Product {
 
         return product;
     }
-
-
-    @Override
-    public String toString() {
-        return "Product [id=" + id + ", productname=" + productname + ", description=" + description + ", tags=" + tags
-                + ", url=" + url + ", price=" + price + ", rating=" + rating + ", image=" + image + "]";
-    }
-
-    
     
 }

@@ -34,7 +34,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/register/process",
             "/login",
             "/api/login/process",
-            "api/purchase/webhook");
+            "api/purchase/webhook",
+            "/");
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String jwt = extractJwtToken(request);
-        System.out.println("extract jwt from COOKIE: " + jwt);
+        
 
         if (jwt == null) {
             logger.debug("No JWT token found in cookies");
@@ -104,7 +105,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        System.err.println("no cookie extracted");
         return null;
     }
 }

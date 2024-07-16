@@ -33,6 +33,9 @@ public class ProductsRepository {
         while (rs.next()) {
             productList.add(new Product().rsToModel(rs));
         }
+        if (productList.isEmpty()) {
+            return null;
+        }
         return productList;
     }
 
@@ -43,19 +46,17 @@ public class ProductsRepository {
         while (rs.next()) {
             productList.add(new Product().rsToModel(rs));
         }
+        if (productList.isEmpty()) {
+            return null;
+        }
         return productList;
     }
 
     public Product getProductDetailById(String id) {
-    
         List<Product> productCollect = new LinkedList<>();
-    
         SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_GET_PRODUCT_BY_ID, Integer.parseInt(id));
         while (rs.next()) {
             productCollect.add(new Product().rsToModel(rs));
-        }
-        for (Product product : productCollect) {
-            System.out.println(product);
         }
         return productCollect.isEmpty() ? null : productCollect.get(0); 
     }

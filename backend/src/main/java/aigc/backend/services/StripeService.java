@@ -1,7 +1,10 @@
 package aigc.backend.services;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,15 @@ import com.stripe.param.checkout.SessionCreateParams.PaymentMethodType;
 @Service
 public class StripeService {
     
+    private String secretKey;
 
-    @Value("${stripe.api.secretKey}")
-    private String apiKey;
-
-
-    public StripeService() {
-        Stripe.apiKey = "sk_test_51NRpXAIMYYwk1potzIoDnA7PK1IV5UVcEb63GHrhbDrEgY8XNU822fJATb10vlaA61u9tDZ5czUGQFSBWTzQtkWL00Q5hgX4yy";
+    public StripeService(@Value("${stripe.api.secretKey}") String secretKey) {
+      this.secretKey = secretKey;
+      Stripe.apiKey = this.secretKey;
     }
-
-    public Session createCheckoutSession(List<String> itemNames, List<Long> itemPrices, List<Long> itemQuantities, String userId) throws StripeException {
+  
+    public Session createCheckoutSession(List<String> itemNames, List<Long> itemPrices, List<Long> itemQuantities, List<Integer> itemIds,String userId) throws StripeException {
         List<SessionCreateParams.LineItem> sessionItems = new ArrayList<>();
-        
         for (int i = 0; i < itemNames.size(); i++) {
             sessionItems.add(
                 SessionCreateParams.LineItem.builder()
@@ -44,15 +44,33 @@ public class StripeService {
                     .setQuantity(itemQuantities.get(i))
                     .build()
             );
+
         }
+
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("user_id", userId);
+        String itemNamesString = String.join(",", itemNames);
+        metadata.put("items_purchased", itemNamesString);
+        String itemIdsString = itemIds.stream()
+                              .map(String::valueOf)
+                              .collect(Collectors.joining(","));
+        metadata.put("item_ids", itemIdsString);
+        
+
+        SessionCreateParams.PaymentIntentData paymentIntentData = SessionCreateParams.PaymentIntentData.builder()
+            .putAllMetadata(metadata)
+            .build();
+      
+
 
         SessionCreateParams params = SessionCreateParams.builder()
             .addPaymentMethodType(PaymentMethodType.CARD)
             .addAllLineItem(sessionItems)
             .setMode(SessionCreateParams.Mode.PAYMENT)
             .putMetadata("user_id", userId)
-            .setSuccessUrl("http://localhost:4200/#/success?session_id={CHECKOUT_SESSION_ID}")
-            .setCancelUrl("http://localhost:4200/#/cancel")
+            .setPaymentIntentData(paymentIntentData)
+            .setSuccessUrl("https://graceful-unity-production.up.railway.app/#/success?session_id={CHECKOUT_SESSION_ID}")
+            .setCancelUrl("https://graceful-unity-production.up.railway.app/#/cancel")
             .build();
 
         return Session.create(params);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CartItem {
+
     private Product product;
     private Integer quantity;
     
@@ -36,8 +37,6 @@ public class CartItem {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-
-
     
     public String toJsonString(CartItem cartItem) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -45,5 +44,4 @@ public class CartItem {
         return json;
     }
 
-    
 }

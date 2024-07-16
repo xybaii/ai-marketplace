@@ -19,7 +19,6 @@ public class UserDataService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User getProfileByUserName(String username){
-
         User user = repo.findByUsername(username);
         if (user != null) {
             return repo.findByUsername(username);
@@ -28,8 +27,8 @@ public class UserDataService {
     }
 
     
-   public void updateProfileById(String id, UserUpdateDTO updatedProfile){
+   public Boolean updateProfileById(String id, UserUpdateDTO updatedProfile){
         updatedProfile.setPassword(bCryptPasswordEncoder.encode(updatedProfile.getPassword()));
-        repo.updateUserProfileById(id, updatedProfile);
+        return repo.updateUserProfileById(id, updatedProfile);
    }
 }

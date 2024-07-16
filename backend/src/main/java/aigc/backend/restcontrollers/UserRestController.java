@@ -1,8 +1,5 @@
 package aigc.backend.restcontrollers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import aigc.backend.Utils.BooleanApiResponse;
 import aigc.backend.models.User;
 import aigc.backend.models.UserUpdateDTO;
 import aigc.backend.services.JwtService;
@@ -53,39 +50,49 @@ public class UserRestController {
             if (user != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(user);
-                System.out.println(json);
                 return ResponseEntity.ok().body(json);
-            } else {
-                return ResponseEntity.status(404).body("User not found");
-            }
+            } 
         }
-        return ResponseEntity.status(401).body("Unauthorized");
+        BooleanApiResponse response = new BooleanApiResponse();
+        response.setSuccess(false);
+        response.setMessage("UNAUTHORIZED");
+        return ResponseEntity.status(401).body(response.toJsonString());
     }
 
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request) throws JsonProcessingException {
 
-    SecurityContextHolder.clearContext();
+        BooleanApiResponse response = new BooleanApiResponse();
+        try {
+            SecurityContextHolder.clearContext();
+            ResponseCookie cookie = jwtService.getCleanJwtCookie(); 
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
+        
+            response.setSuccess(true);
+            response.setMessage("200 OK");
+            return new ResponseEntity<>(response.toJsonString(), headers, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setSuccess(false);
+            response.setMessage("BAD REQUEST");
+            return ResponseEntity.badRequest().body(response.toJsonString());
+        }
+        }
 
-    ResponseCookie cookie = jwtService.getCleanJwtCookie(); 
-    HttpHeaders headers = new HttpHeaders();
-    headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
-    Map<String, String> response = new HashMap<>();
-    response.put("Msg", "log out success");
+        @PutMapping("/profile/edit/{id}")
+        public ResponseEntity<String> postMethodName(@PathVariable String id, @RequestBody UserUpdateDTO updatedProfile) throws JsonProcessingException {
 
-    return new ResponseEntity<>(response, headers, HttpStatus.OK);
-
-    
-}
-
-@PutMapping("/profile/edit/{id}")
-public ResponseEntity<String> postMethodName(@PathVariable String id, @RequestBody UserUpdateDTO updatedProfile) {
-    service.updateProfileById(id, updatedProfile);
-    Map<String, String> msg = new HashMap<>();
-    msg.put("msg", "successfully updated");
-    return ResponseEntity.ok().body(msg.toString());
-}
+            BooleanApiResponse response = new BooleanApiResponse();
+            if (service.updateProfileById(id, updatedProfile)){
+                response.setSuccess(true);
+                response.setMessage("200 OK");
+                return ResponseEntity.ok().body(response.toJsonString());
+            }
+            response.setSuccess(false);
+            response.setMessage("BAD REQUEST");
+            return ResponseEntity.badRequest().body(response.toJsonString());
+        }
 
     
 }

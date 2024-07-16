@@ -4,14 +4,12 @@ import java.io.StringReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import aigc.backend.Utils.BooleanApiResponse;
 import aigc.backend.models.User;
@@ -39,16 +37,14 @@ public class RegisterRestController {
         user.setEmail(json.getString("email"));
 
         BooleanApiResponse response = new BooleanApiResponse();
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
         if (userAuthenticateService.registerNewUser(user)){
-            
             response.setSuccess(true);
-            response.setMessage("Registered successfully");
-            jsonString = mapper.writeValueAsString(response);
-            return ResponseEntity.ok().body(jsonString);
+            response.setMessage("200 OK");
+            return ResponseEntity.ok().body(response.toJsonString());
         }
-        return ResponseEntity.badRequest().body(jsonString);
+        response.setSuccess(false);
+        response.setMessage("BAD REQUEST");
+        return ResponseEntity.badRequest().body(response.toJsonString());
     }
 }
  

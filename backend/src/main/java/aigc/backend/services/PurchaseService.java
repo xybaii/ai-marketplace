@@ -19,13 +19,16 @@ public class PurchaseService {
     private PurchaseRepository purchaseRepo;
 
       @Transactional    
-      public String createChargeRecord(Charge charge, String userId) throws StripeException{
-        String response = purchaseRepo.createChargeRecord(charge, userId);
-        return response;
+      public Boolean createChargeRecord(Charge charge) throws StripeException{
+        return purchaseRepo.saveChargeAsPurchaseOrder(charge);
     }
 
     public List<PurchaseOrder> getPurchaseHistory(String id){
       return purchaseRepo.getPurchaseHistory(id);
+    }
+
+    public PurchaseOrder getPurchaseOrderByPOID(String purchaseId){
+      return purchaseRepo.getPurchaseOrderById(purchaseId);
     }
     
 }

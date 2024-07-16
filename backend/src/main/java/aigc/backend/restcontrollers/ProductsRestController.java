@@ -26,20 +26,29 @@ public class ProductsRestController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Product>> getAllProducts(){
         List<Product> productList = prodService.getAllProducts();
-        return ResponseEntity.ok().body(productList);
+        if (productList != null) {
+            return ResponseEntity.ok().body(productList);
+        }
+        return ResponseEntity.badRequest().body(null);
     }
 
     @GetMapping("/product/search")
     public ResponseEntity<List<Product>> getProductsBySearch(@RequestParam String q){
         List<Product> productList = prodService.getProductsBySearch(q);
-        return ResponseEntity.ok().body(productList);
+        if (productList != null) {
+            return ResponseEntity.ok().body(productList);
+        }
+        return ResponseEntity.ok().body(null);
     }
 
 
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProductDetailById(@PathVariable String id) {
         Product productDetail = prodService.getProductDetailById(id);
-        return ResponseEntity.ok().body(productDetail);
+        if (productDetail != null){
+            return ResponseEntity.ok().body(productDetail);
+        }
+        return ResponseEntity.badRequest().body(null);
     }
     
     

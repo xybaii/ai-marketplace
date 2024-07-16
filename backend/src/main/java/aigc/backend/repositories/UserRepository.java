@@ -29,7 +29,6 @@ public class UserRepository {
 
 
     public User findByUsername(String username){
-
         SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_FIND_USER_BY_USERNAME, username);
         if (rs.next()) {
             return new User().rsToModel(rs);
@@ -48,8 +47,14 @@ public class UserRepository {
         }
     }
 
-    public void updateUserProfileById(String id, UserUpdateDTO updatedProfile) {
-        jdbcTemplate.update(SQL_UPDATE_USER_PROFILE_BY_ID, updatedProfile.getPassword(), updatedProfile.getFirstname(), updatedProfile.getLastname(), updatedProfile.getEmail(), id);
+    public Boolean updateUserProfileById(String id, UserUpdateDTO updatedProfile) {
+        try {
+            jdbcTemplate.update(SQL_UPDATE_USER_PROFILE_BY_ID, updatedProfile.getPassword(), updatedProfile.getFirstname(), updatedProfile.getLastname(), updatedProfile.getEmail(), id);
+            return true;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
    

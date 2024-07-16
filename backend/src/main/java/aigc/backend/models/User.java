@@ -116,14 +116,6 @@ public class User implements UserDetails{
         this.email = email;
     }
 
- 
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + ", authorities=" + authorities
-                + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + "]";
-    }
-
     @SuppressWarnings("null")
     public User rsToModel(SqlRowSet rs){
         User user = new User();
@@ -137,8 +129,6 @@ public class User implements UserDetails{
                                   .map(SimpleGrantedAuthority::new)
                                   .collect(Collectors.toList()));
         return user;
-    }
-
- 
+    } 
     
 }

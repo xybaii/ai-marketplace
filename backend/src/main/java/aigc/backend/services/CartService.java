@@ -17,12 +17,12 @@ public class CartService {
         return cartRepo.getCartItems(id);
     }
 
-    public void saveCart(String cartItems, String id) throws JsonProcessingException{
-        cartRepo.saveCartItems(cartItems, id);
+    public Boolean saveCart(String cartItems, String id) throws JsonProcessingException{
+        return cartRepo.saveCartItems(cartItems, id);
     }
 
-    public void clearCart(String id){
-        cartRepo.clearCart(id);
+    public Boolean clearCart(String id){
+        return cartRepo.clearCart(id);
     }
 }
 

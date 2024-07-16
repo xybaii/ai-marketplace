@@ -26,45 +26,43 @@ public class PurchaseRepository {
     @Autowired
     private MailSenderService mailSenderService;
 
-    private final static String SQL_SAVE_CHARGE_RECORD = """
-            INSERT INTO purchase_orders (purchase_id, user_id, amount, email, receipt_url) VALUES (?, ?, ?, ?, ?)
+    private final static String SQL_SAVE_CHARGE_AS_PO = """
+            INSERT INTO purchase_orders (purchase_id, user_id, items_purchased, item_ids, amount, email, receipt_url) VALUES (?, ?, ?, ?, ?, ?, ?)
             """;
-    private final static String SQL_GET_PURCHASE_HISTORY = """
-            select * from purchase_orders where user_id = ?
+    private final static String SQL_GET_ALL_PO_BY_USER_ID = """
+            select * from purchase_orders where user_id = ? ORDER BY created_at DESC
+            """;
+    private final static String SQL_GET_PO_BY_PO_ID = """
+            select * from purchase_orders where purchase_id = ?
             """;
 
 
-    public String createChargeRecord(Charge charge, String userId) throws StripeException{
+    public Boolean saveChargeAsPurchaseOrder(Charge charge) throws StripeException{
 
-        String chargeId = charge.getId();
+        String string_user_id = charge.getMetadata().get("user_id");
+        Integer user_id = Integer.parseInt(string_user_id);
+        String purchase_id = charge.getId();
         long amount = charge.getAmount();
         String email = charge.getBillingDetails().getEmail();
         String receiptUrl = charge.getReceiptUrl();
+        String items_purchased = charge.getMetadata().get("items_purchased");
+        String items_ids = charge.getMetadata().get("item_ids");
 
-        String emailContent = """
-                Hello\n\n
-                Thank you for your payment!\n\n
-                Total amount\n\n
-                """ + amount + """
-                        \n\nYou may view you receipt at\n\n
-                        """+ receiptUrl;;
+        String emailContent = "Hello\n\n Thank you for your payment!\n\n Total amount \n " + "$ "+ amount/100 + "\n\nYou may view you receipt at " + receiptUrl;
+        mailSenderService.sendNewMail(email, "Payment receipt from AIGC Hub Order No. " + purchase_id, emailContent);
 
-        mailSenderService.sendNewMail(email, "Payment receipt from " + chargeId, emailContent);
-
-        String response = null;
         try {
-            jdbcTemplate.update(SQL_SAVE_CHARGE_RECORD, chargeId, userId, amount, email, receiptUrl);
-            response = "purchase order saved successfully";
+            jdbcTemplate.update(SQL_SAVE_CHARGE_AS_PO, purchase_id, user_id, items_purchased, items_ids, amount, email, receiptUrl);
+            return true;
         } catch (DataAccessException e) {
-            response = "fail to save purchase order to db";
             e.printStackTrace();
+            return false;
         }
-        return response;
     }
 
   public List<PurchaseOrder> getPurchaseHistory(String id){
 
-        SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_GET_PURCHASE_HISTORY, id);
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_GET_ALL_PO_BY_USER_ID, id);
         List<PurchaseOrder> purchaseOrders = new LinkedList<>();
         while (rs.next()) {
             purchaseOrders.add(new PurchaseOrder().rsToModel(rs));
@@ -73,6 +71,16 @@ public class PurchaseRepository {
             return purchaseOrders;
         }
         return null;   
+  }
+
+  public PurchaseOrder getPurchaseOrderById(String purchaseId){
+
+    SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_GET_PO_BY_PO_ID, purchaseId);
+        List<PurchaseOrder> purchaseOrder = new LinkedList<>();
+        while (rs.next()) {
+            purchaseOrder.add(new PurchaseOrder().rsToModel(rs));
+        }
+        return purchaseOrder.isEmpty() ? null : purchaseOrder.get(0); 
   }
     
     

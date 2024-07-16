@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import aigc.backend.security.AuthEntryPointJwt;
+// import aigc.backend.security.AuthEntryPointJwt;
 
 
 
@@ -22,9 +22,9 @@ public class SecurityConfiguration {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
     
-    private AuthEntryPointJwt unauthorizedHandler;
+    // @Autowired
+    // private AuthEntryPointJwt unauthorizedHandler;
 
     public SecurityConfiguration(
         JwtAuthenticationFilter jwtAuthenticationFilter,
@@ -37,7 +37,24 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authReq -> authReq.requestMatchers( "/register", "api/register/process", "/login", "api/login/process", "api/purchase/webhook")
+                .authorizeHttpRequests(authReq -> authReq.requestMatchers( 
+                                                        "/register",
+                                                        "/api/register/process",
+                                                        "/login",
+                                                        "/api/login/process",
+                                                        "/api/purchase/webhook",
+                                                        "/",
+                                                        "/main-B2H2UHHS.js",
+                                                        "/polyfills-N6LQB2YD.js",
+                                                        "/ngsw.json",
+                                                        "/index.html",
+                                                        "/*.js", 
+                                                        "/*.css", 
+                                                        "/favicon.ico", 
+                                                        "/manifest.webmanifest", 
+                                                        "/assets/**", 
+                                                        "/images/**"
+                                                        )
                                                          .permitAll()
                                                          .anyRequest()
                                                          .authenticated())
