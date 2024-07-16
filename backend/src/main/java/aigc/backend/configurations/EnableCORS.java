@@ -13,7 +13,7 @@ public class EnableCORS {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:4200")
+                registry.addMapping("/**").allowedOrigins("https://graceful-unity-production.up.railway.app")
                                                       .allowedMethods("GET", "POST", "PUT", "DELETE")
                                                       .allowedHeaders("Authorization", "Content-Type", "Cookie")
                                                       .allowCredentials(true);

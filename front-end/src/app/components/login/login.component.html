@@ -1,0 +1,52 @@
+<section class="bg-white dark:bg-gray-900 h-screen">
+    <div class="flex flex-col items-center justify-center px-6 py-36 mx-auto md:h-screen lg:py-0">
+        
+        <div class="w-full bg-white rounded-lg shadow border border-gray-10 dark:border md:mt-0 sm:max-w-md xl:p-0 ">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                    Sign in to your account
+                </h1>
+                <form class="space-y-4 md:space-y-6"  method="post" [formGroup]="loginForm" (submit)="processLogin()">
+                    <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-gray-900">Username</label>
+                        <input type="text" name="username" id="username" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" formControlName="username">
+                        <small  *ngIf="loginForm.get('username')?.errors?.['required']" style="color: limegreen;">
+                            Please insert a valid username
+                        </small>
+                    </div>
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+                        <input type="password" name="password" id="password" autocomplete="current-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" formControlName="password">
+                        <small  *ngIf="loginForm.get('password')?.errors?.['required']" style="color: limegreen;">
+                            Please insert a valid password
+                        </small>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                              <input id="remember" aria-describedby="remember" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">
+                            </div>
+                            <div class="ml-3 text-sm">
+                              <label for="remember" class="text-gray-500">Remember me</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    
+                    <div>
+                        <button type="submit" class="w-full mb-5 text-white bg-indigo-500 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2 my-1 text-center" [disabled]="!loginForm.valid">Sign in</button>
+
+                        <small *ngIf="failLogin" style="color: tomato;">{{ failLogin }}</small>
+                    
+                    <p class="text-sm mt-5 font-light text-gray-500">
+                        Don’t have an account yet? <span class="font-medium text-primary-600 hover:underline dark:text-primary-500" (click)="signUp()">Sign up</span>
+                    </p>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>

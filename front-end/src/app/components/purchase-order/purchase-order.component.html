@@ -1,0 +1,94 @@
+<!-- <section class="bg-white py-8 antialiased md:py-16"> -->
+  <section class="bg-white dark:bg-gray-900 px-5 py-8 antialiased md:pt-20 md:pb-2  min-h-screen">
+    <div class="mx-auto max-w-screen-xl px-4 py-24 2xl:px-0">
+      <div class="mx-auto max-w-5xl">
+        <nav class="flex" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li class="inline-flex items-center">
+              <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-gray">
+                <svg class="me-2.5 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                </svg>
+                Home
+              </a>
+            </li>
+            <li>
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-gray-400 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7" />
+                </svg>
+                <p class="ms-1 text-sm font-medium text-gray-700 hover:text-primary-600 dark:text-gray-400 dark:hover:text-grey md:ms-2">Purchase Orders</p>
+              </div>
+            </li>
+          
+          </ol>
+        </nav>
+        <div class="gap-4 sm:flex sm:items-center sm:justify-between">
+          
+          <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Purchase Orders</h2>
+  
+          <div class="mt-6 gap-4 space-y-4 sm:mt-0 sm:flex sm:items-center sm:justify-end sm:space-y-0">
+          </div>
+        </div>
+  
+        <div class="mt-6 flow-root sm:mt-8" *ngIf="purchaseOrders.length > 0; else noPurchaseOrders">
+          <div class="divide-y divide-gray-700 dark:divide-gray-100" *ngFor="let po of purchaseOrders">
+
+            <div class="flex flex-wrap items-center gap-y-4 py-6 gap-x-10">
+              <dl class="w-1/2 sm:w-3/4 lg:w-auto lg:flex-3 pr-16">
+                <dt class="text-base font-black text-gray-500 dark:text-white">Order ID:</dt>
+                <dd class="mt-1.5 text-base font-normal text-gray-900 dark:text-white">
+                  <small class="flex-wrap">{{po.purchase_id}}</small>
+                </dd>
+              </dl>
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-black text-gray-700 dark:text-white">Date:</dt>
+                <dd class="mt-1.5 text-base font-normal text-gray-900 dark:text-white">{{po.created_at | dateFormat}}</dd>
+              </dl>
+
+              <!-- <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-black text-gray-500 dark:text-white">Purchases</dt>
+                <dd class="mt-1.5 text-base font-normal text-gray-500 dark:text-white">{{po.items_purchased}}</dd>
+              </dl> -->
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-black text-gray-500 dark:text-white">Total paid:</dt>
+                <dd class="mt-1.5 text-base font-normal text-gray-500 dark:text-white">{{po.amount / 100 | currency}}</dd>
+              </dl>
+  
+              <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
+                <dt class="text-base font-black text-gray-500 dark:text-white">Status:</dt>
+                <dd class="me-2 mt-1.5 inline-flex items-center rounded bg-green-600 px-2.5 py-0.5 text-xs font-medium text-white dark:bg-green-600 dark:text-white">
+                    <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                    </svg>
+                    Confirmed
+                  </dd>
+              </dl>
+  
+              <div class="w-full grid sm:grid-cols-2 lg:flex lg:w-auto lg:items-center lg:justify-end gap-4">
+               
+                <button type="button" class="w-full rounded-lg bg-pink-500 px-3 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 lg:w-auto" (click)="review(po.purchase_id)">Review</button>
+
+
+
+                <a href="{{po.receipt_url}}" class="w-full inline-flex justify-center rounded-lg  border border-gray-200 bg-indigo-500 px-3 py-2 text-sm font-medium text-gray-100 hover:text-gray-300 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:text-gray-100  dark:hover:text-gray-300 dark:focus:ring-gray-700 lg:w-auto" target="_blank">View receipt</a>
+              </div>
+            </div>
+          </div>
+
+
+         
+        </div>
+        
+        <ng-template #noPurchaseOrders>
+          <div class="mt-6 text-white flow-root sm:mt-8">
+            <p>No purchase orders found.</p>
+          </div>
+        </ng-template>
+
+    
+      </div>
+    </div>
+  </section>

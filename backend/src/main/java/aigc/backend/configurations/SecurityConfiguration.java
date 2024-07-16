@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                                                         "/api/login/process",
                                                         "/api/purchase/webhook",
                                                         "/",
-                                                        "/main-B2H2UHHS.js",
+                                                        "/main-7WXWO5CJ.js",
                                                         "/polyfills-N6LQB2YD.js",
                                                         "/ngsw.json",
                                                         "/index.html",
@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                                                         "/assets/**", 
                                                         "/images/**"
                                                         )
-                                                         .permitAll()
+                                                        .permitAll()
                                                          .anyRequest()
                                                          .authenticated())
                 .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

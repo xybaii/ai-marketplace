@@ -1,0 +1,6 @@
+{
+    "/api": {
+      "target": "https://graceful-unity-production.up.railway.app",
+      "insecure": true
+    }
+  }
