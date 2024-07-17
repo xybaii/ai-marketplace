@@ -42,7 +42,7 @@ public class CartRestController {
          }
          String response = cartService.getCart(userId);
          if (!response.equals("false")) {
-            ResponseEntity.ok().body(response);
+            return ResponseEntity.ok().body(response);
          }
          BooleanApiResponse message = new BooleanApiResponse();
          message.setSuccess(true);
