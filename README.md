@@ -28,4 +28,5 @@ This is an e-commerce web application for third-party AI services. Users can sig
 
 ### Video preview
 
-[![https://youtu.be/HCUPOtrgzDA?si=IweeQVmuivoIA_4u](image.png)]((https://youtu.be/HCUPOtrgzDA?si=IweeQVmuivoIA_4u)) 
+
+[![video](image.png)](https://youtu.be/HCUPOtrgzDA?si=IweeQVmuivoIA_4u)
