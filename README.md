@@ -26,4 +26,6 @@ This is an e-commerce web application for third-party AI services. Users can sig
 - **Others**: Proxy and Service Worker for Caching, Kommunication AI Chatbot, PWA (Manifest and Service Worker)
 - **Deployment**: Docker, Railway
 
+### Video preview
 
+[![https://youtu.be/HCUPOtrgzDA?si=IweeQVmuivoIA_4u](image.png)]((https://youtu.be/HCUPOtrgzDA?si=IweeQVmuivoIA_4u)) 
