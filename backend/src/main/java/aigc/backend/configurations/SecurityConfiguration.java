@@ -37,7 +37,8 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authReq -> authReq.requestMatchers( 
+                .authorizeHttpRequests(authReq -> authReq
+                                                        .requestMatchers( 
                                                         "/register",
                                                         "/api/register/process",
                                                         "/login",
@@ -46,12 +47,17 @@ public class SecurityConfiguration {
                                                         "/",
                                                         "/main-7WXWO5CJ.js",
                                                         "/polyfills-N6LQB2YD.js",
+                                                        "/styles-TIOJMO6P.css",
                                                         "/ngsw.json",
                                                         "/index.html",
                                                         "/*.js", 
-                                                        "/*.css", 
+                                                        "/*.css",
+                                                        "/*.png",
                                                         "/favicon.ico", 
                                                         "/manifest.webmanifest", 
+                                                        "/static/**",
+                                                        "/js/**",
+                                                        "/css/**",
                                                         "/assets/**", 
                                                         "/images/**"
                                                         )
